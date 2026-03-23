@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>动力层对比试验</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/overrides.css" />
+    <link rel="stylesheet" href="/compare.css" />
+  </head>
+  <body class="compare-body">
+    <main class="compare-app">
+      <section id="compare-upload-screen" class="compare-screen">
+        <div class="compare-upload-shell">
+          <header class="compare-hero">
+            <div class="compare-hero-brand">TriStage Narrative Studio</div>
+            <h1>动力层对比试验</h1>
+            <p>上传两组数量相同的动力层 JSON 文件或 Excel 表格，逐组打分并完成对比记录。</p>
+          </header>
+
+          <div class="compare-upload-card">
+            <div class="compare-upload-grid">
+              <section class="compare-file-panel">
+                <div class="compare-file-panel-head">
+                  <h2>方案 A</h2>
+                  <label class="compare-file-trigger">
+                    <input id="compare-left-input" type="file" accept=".json,.xlsx,application/json,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple />
+                    选择文件
+                  </label>
+                </div>
+                <div class="compare-file-table-wrap">
+                  <table class="compare-file-table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>文件名</th>
+                      </tr>
+                    </thead>
+                    <tbody id="compare-left-files">
+                      <tr>
+                        <td colspan="2" class="compare-empty-row">尚未选择文件</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section class="compare-file-panel">
+                <div class="compare-file-panel-head">
+                  <h2>方案 B</h2>
+                  <label class="compare-file-trigger">
+                    <input id="compare-right-input" type="file" accept=".json,.xlsx,application/json,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple />
+                    选择文件
+                  </label>
+                </div>
+                <div class="compare-file-table-wrap">
+                  <table class="compare-file-table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>文件名</th>
+                      </tr>
+                    </thead>
+                    <tbody id="compare-right-files">
+                      <tr>
+                        <td colspan="2" class="compare-empty-row">尚未选择文件</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            <div class="compare-upload-footer">
+              <div id="compare-upload-hint" class="compare-upload-hint">请上传两组数量相同的 JSON 或 XLSX 文件。</div>
+              <button id="compare-start-btn" class="mint-btn compare-start-btn" type="button" disabled>开始对比</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="compare-workspace-screen" class="compare-screen hidden">
+        <div class="compare-workspace">
+          <section class="compare-score-panel">
+            <div class="compare-score-panel-head">
+              <div>
+                <div class="compare-score-eyebrow">评分栏</div>
+                <h2 id="compare-progress-title">第 1 / 1 组对比</h2>
+                <p id="compare-progress-subtitle">为当前这组动力层分别完成观察后，再提交评分进入下一组。</p>
+              </div>
+              <button id="compare-score-toggle" class="ghost-btn" type="button">收起评分栏</button>
+            </div>
+
+            <div id="compare-score-body" class="compare-score-body">
+              <form id="compare-score-form" class="compare-score-grid">
+                <label class="compare-score-field">
+                  <span>叙事一致性</span>
+                  <select name="narrativeConsistency" required></select>
+                </label>
+                <label class="compare-score-field">
+                  <span>叙事张力与节奏</span>
+                  <select name="narrativeTension" required></select>
+                </label>
+                <label class="compare-score-field">
+                  <span>分支结构质量</span>
+                  <select name="branchStructureQuality" required></select>
+                </label>
+                <label class="compare-score-field">
+                  <span>选择设计质量</span>
+                  <select name="choiceDesignQuality" required></select>
+                </label>
+                <label class="compare-score-field">
+                  <span>后果与反馈质量</span>
+                  <select name="consequenceFeedbackQuality" required></select>
+                </label>
+                <label class="compare-score-field">
+                  <span>状态驱动有效性</span>
+                  <select name="stateDrivenEffectiveness" required></select>
+                </label>
+              </form>
+
+              <div class="compare-score-actions">
+                <button id="compare-export-progress" class="ghost-btn" type="button">导出当前评分表</button>
+                <button id="compare-submit-score" class="mint-btn" type="button">提交评分并进入下一组</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="compare-columns">
+            <section class="compare-pane" data-pane="left">
+              <header class="compare-pane-head">
+                <div class="compare-pane-head-main">
+                  <div class="compare-pane-label">方案 A</div>
+                  <h3 id="compare-left-title">未载入文件</h3>
+                </div>
+                <div class="compare-pane-tools">
+                  <button class="ghost-btn compare-pane-tool" type="button" data-pane-detail-toggle="left">收起属性栏</button>
+                  <button class="ghost-btn compare-pane-tool" type="button" data-pane-focus-toggle="left">聚焦此侧</button>
+                </div>
+              </header>
+              <div class="compare-pane-layout dynamic-layout compare-pane-layout">
+                <div class="dynamic-flow compare-pane-flow">
+                  <div class="dynamic-canvas-shell compare-canvas-shell">
+                    <div id="compare-left-viewport" class="canvas-viewport compare-canvas-viewport">
+                      <div class="canvas-scene">
+                        <div id="compare-left-base" class="canvas-base">
+                          <div id="compare-left-timeline" class="timeline dynamic-canvas compare-dynamic-canvas"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="canvas-actions compare-canvas-actions">
+                      <div class="canvas-zoom">
+                        <button class="ghost-btn canvas-zoom-btn" type="button" data-pane-zoom="left" data-zoom-action="out">-</button>
+                        <button class="ghost-btn canvas-zoom-btn canvas-zoom-label" type="button" data-pane-zoom="left" data-zoom-action="reset">
+                          <span id="compare-left-zoom-label">100%</span>
+                        </button>
+                        <button class="ghost-btn canvas-zoom-btn" type="button" data-pane-zoom="left" data-zoom-action="in">+</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <aside class="detail-panel dynamic-detail-panel compare-detail-panel">
+                  <div class="tab-row compare-detail-tabs">
+                    <button class="detail-tab active" type="button" data-pane-tab="left" data-tab="event">事件</button>
+                    <button class="detail-tab" type="button" data-pane-tab="left" data-tab="decision">决策</button>
+                    <button class="detail-tab" type="button" data-pane-tab="left" data-tab="jump">跳转</button>
+                  </div>
+                  <div id="compare-left-detail" class="detail-content"></div>
+                </aside>
+              </div>
+            </section>
+
+            <section class="compare-pane" data-pane="right">
+              <header class="compare-pane-head">
+                <div class="compare-pane-head-main">
+                  <div class="compare-pane-label">方案 B</div>
+                  <h3 id="compare-right-title">未载入文件</h3>
+                </div>
+                <div class="compare-pane-tools">
+                  <button class="ghost-btn compare-pane-tool" type="button" data-pane-detail-toggle="right">收起属性栏</button>
+                  <button class="ghost-btn compare-pane-tool" type="button" data-pane-focus-toggle="right">聚焦此侧</button>
+                </div>
+              </header>
+              <div class="compare-pane-layout dynamic-layout compare-pane-layout">
+                <div class="dynamic-flow compare-pane-flow">
+                  <div class="dynamic-canvas-shell compare-canvas-shell">
+                    <div id="compare-right-viewport" class="canvas-viewport compare-canvas-viewport">
+                      <div class="canvas-scene">
+                        <div id="compare-right-base" class="canvas-base">
+                          <div id="compare-right-timeline" class="timeline dynamic-canvas compare-dynamic-canvas"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="canvas-actions compare-canvas-actions">
+                      <div class="canvas-zoom">
+                        <button class="ghost-btn canvas-zoom-btn" type="button" data-pane-zoom="right" data-zoom-action="out">-</button>
+                        <button class="ghost-btn canvas-zoom-btn canvas-zoom-label" type="button" data-pane-zoom="right" data-zoom-action="reset">
+                          <span id="compare-right-zoom-label">100%</span>
+                        </button>
+                        <button class="ghost-btn canvas-zoom-btn" type="button" data-pane-zoom="right" data-zoom-action="in">+</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <aside class="detail-panel dynamic-detail-panel compare-detail-panel">
+                  <div class="tab-row compare-detail-tabs">
+                    <button class="detail-tab active" type="button" data-pane-tab="right" data-tab="event">事件</button>
+                    <button class="detail-tab" type="button" data-pane-tab="right" data-tab="decision">决策</button>
+                    <button class="detail-tab" type="button" data-pane-tab="right" data-tab="jump">跳转</button>
+                  </div>
+                  <div id="compare-right-detail" class="detail-content"></div>
+                </aside>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="compare-finish-screen" class="compare-screen hidden">
+        <div class="compare-finish-card">
+          <div class="compare-hero-brand">TriStage Narrative Studio</div>
+          <h2>对比试验已完成</h2>
+          <p>所有文件组都已经评分完成，你可以导出结果，或重新开始新一轮对比。</p>
+          <div class="compare-finish-actions">
+            <button id="compare-download-results" class="mint-btn" type="button">导出评分表格</button>
+            <button id="compare-restart-btn" class="ghost-btn" type="button">重新开始</button>
+          </div>
+          <div id="compare-results-summary" class="compare-results-summary"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/compare.js"></script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "tristage-narrative-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive narrative design studio powered by OpenRouter GPT-5.4",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

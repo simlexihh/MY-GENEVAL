@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TriStage Narrative Studio</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/overrides.css" />
+  </head>
+  <body>
+    <div id="app-shell" class="app-shell">
+      <aside id="sidebar" class="sidebar">
+        <div>
+          <div class="brand">TriStage Narrative Studio</div>
+          <div class="sidebar-title">项目导航</div>
+        </div>
+        <nav id="nav-list" class="nav-list"></nav>
+        <div class="sidebar-foot">
+          <div id="api-status" class="api-badge">API 未检测</div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section id="start-screen" class="screen start-screen">
+          <div class="hero-card-wrap">
+            <div class="hero-shadow-card"></div>
+            <div class="hero-card">
+              <div class="star star-a"></div>
+              <div class="star star-b"></div>
+              <div class="star star-c"></div>
+              <h1>开始一个新的故事</h1>
+              <p>输入一句话，系统会生成意图层、结构层、动力层与试玩节点。</p>
+              <form id="idea-form" class="idea-form">
+                <input
+                  id="idea-input"
+                  type="text"
+                  placeholder="例如：荒岛求生的玩家，在与其他幸存者的相处中，选择独自生存或合作求生"
+                  value="荒岛求生的玩家，在与其他幸存者的相处中，选择“独自生存保障自身”或“合作求生共渡难关”，不同选择会触发荒岛隐藏危机的不同解锁方式。"
+                />
+                <button type="submit">生成</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section id="intent-screen" class="screen hidden intent-screen">
+          <header class="screen-header intent-header">
+            <div class="intent-header-main">
+              <h2>意图解析</h2>
+              <input id="story-logline" class="header-input intent-logline" />
+            </div>
+          </header>
+          <div class="intent-grid">
+            <article class="panel coral intent-panel">
+              <div class="panel-head">
+                <h3>主控思想</h3>
+                <div class="panel-actions">
+                  <button class="mini-btn intent-btn-regenerate" type="button" data-intent-action="regenerate" data-panel="theme">重新生成</button>
+                  <button class="mini-btn intent-btn-edit" type="button" data-intent-action="edit" data-panel="theme">编辑</button>
+                  <button class="mini-btn intent-btn-save" type="button" data-intent-action="save" data-panel="theme">保存</button>
+                </div>
+              </div>
+              <div class="intent-card-content">
+                <div id="theme-view" class="intent-display"></div>
+                <textarea id="theme-editor" class="intent-editor hidden"></textarea>
+              </div>
+            </article>
+
+            <article class="panel aqua intent-panel">
+              <div class="panel-head">
+                <h3>矛盾系统</h3>
+                <div class="panel-actions">
+                  <button class="mini-btn intent-btn-regenerate" type="button" data-intent-action="regenerate" data-panel="conflicts">重新生成</button>
+                  <button class="mini-btn intent-btn-edit" type="button" data-intent-action="edit" data-panel="conflicts">编辑</button>
+                  <button class="mini-btn intent-btn-save" type="button" data-intent-action="save" data-panel="conflicts">保存</button>
+                </div>
+              </div>
+              <div class="intent-card-content">
+                <div id="conflict-view" class="intent-display intent-list-display"></div>
+                <textarea id="conflict-editor" class="intent-editor hidden"></textarea>
+              </div>
+            </article>
+
+            <article class="panel lilac intent-panel">
+              <div class="panel-head">
+                <h3>状态参数表</h3>
+                <div class="panel-actions">
+                  <button class="mini-btn intent-btn-regenerate" type="button" data-intent-action="regenerate" data-panel="stateMatrix">重新生成</button>
+                  <button class="mini-btn intent-btn-edit" type="button" data-intent-action="edit" data-panel="stateMatrix">编辑</button>
+                  <button class="mini-btn intent-btn-save" type="button" data-intent-action="save" data-panel="stateMatrix">保存</button>
+                </div>
+              </div>
+              <div class="intent-card-content">
+                <div id="state-matrix" class="matrix-table intent-display"></div>
+                <textarea id="state-editor" class="intent-editor hidden"></textarea>
+              </div>
+            </article>
+
+            <article class="panel periwinkle intent-panel">
+              <div class="panel-head">
+                <h3>体验目标</h3>
+              </div>
+              <div class="goal-grid intent-goal-grid">
+                <label>
+                  <span>总体情绪走向</span>
+                  <select id="emotion-curve">
+                    <option value="持续上升">持续上升</option>
+                    <option value="持续下降">持续下降</option>
+                    <option value="先升后降">先升后降</option>
+                    <option value="先降后升">先降后升</option>
+                    <option value="升-降-升">升-降-升</option>
+                    <option value="降-升-降">降-升-降</option>
+                  </select>
+                </label>
+                <label>
+                  <span>总体压力风格</span>
+                  <select id="interaction-type">
+                    <option value="推理判断型">推理判断型</option>
+                    <option value="探索叙事型">探索叙事型</option>
+                    <option value="资源管理型">资源管理型</option>
+                    <option value="高压责任型">高压责任型</option>
+                    <option value="阶段裁决型">阶段裁决型</option>
+                    <option value="关系权衡型">关系权衡型</option>
+                  </select>
+                </label>
+              </div>
+            </article>
+          </div>
+          <div class="intent-footer">
+            <button id="goto-structure" class="primary-btn intent-next-btn" type="button">生成结构层</button>
+          </div>
+        </section>
+
+        <section id="structure-screen" class="screen hidden">
+          <header class="screen-header">
+            <div>
+              <h2>结构层</h2>
+              <p>章节、幕次与节点结构在这里维护。</p>
+            </div>
+            <div class="toolbar">
+              <button id="reset-structure" class="warm-btn">重新生成</button>
+              <button id="add-node" class="gold-btn">添加节点</button>
+              <button id="goto-dynamic" class="mint-btn">生成动力层</button>
+            </div>
+          </header>
+
+          <div class="structure-layout">
+            <div class="structure-stage">
+              <div id="chapter-tabs" class="chapter-tabs"></div>
+              <div id="structure-canvas" class="structure-canvas"></div>
+            </div>
+            <aside class="property-panel">
+              <h3>属性面板</h3>
+              <label><span>节点编号</span><input id="node-id" /></label>
+              <label><span>节点标题</span><input id="node-title" /></label>
+              <label><span>所属章节</span><input id="node-chapter" /></label>
+              <label><span>章内幕次</span><input id="node-act" /></label>
+              <div class="toggle-row">
+                <label><input id="node-empty" type="checkbox" /> 空白节点</label>
+                <label><input id="node-key" type="checkbox" /> 关键节点</label>
+              </div>
+              <button id="save-node" class="primary-btn">保存节点</button>
+            </aside>
+          </div>
+        </section>
+
+        <section id="dynamic-screen" class="screen hidden">
+          <header class="screen-header">
+            <div>
+              <h2>动力层</h2>
+              <p>事件、决策、跳转联动编辑。</p>
+            </div>
+            <div class="toolbar">
+              <button id="regenerate-dynamic" class="warm-btn">重新生成</button>
+              <button id="add-dynamic-node" class="gold-btn">添加节点</button>
+              <button id="goto-playtest" class="mint-btn">预试玩</button>
+            </div>
+          </header>
+
+          <div class="dynamic-layout">
+            <div id="dynamic-timeline" class="timeline"></div>
+            <aside class="detail-panel">
+              <div class="tab-row">
+                <button class="detail-tab active" data-detail-tab="event">事件</button>
+                <button class="detail-tab" data-detail-tab="decision">决策</button>
+                <button class="detail-tab" data-detail-tab="jump">跳转</button>
+              </div>
+              <div id="detail-content" class="detail-content"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="playtest-screen" class="screen hidden">
+          <header class="screen-header">
+            <div>
+              <h2>试玩模式</h2>
+              <p>验证关键节点的文本表现与状态反馈。</p>
+            </div>
+            <button id="exit-playtest" class="ghost-btn">退出试玩</button>
+          </header>
+            <div class="playtest-layout">
+              <div class="play-card">
+                <div class="play-card-title" id="playtest-title"></div>
+                <div class="play-card-scroll">
+                  <div id="playtest-text" class="play-card-text"></div>
+                  <div id="playtest-decision" class="play-decision-label"></div>
+                  <div id="playtest-options" class="play-options"></div>
+                </div>
+              </div>
+              <aside class="playtest-side playtest-side-panel">
+                <div class="tab-row playtest-tab-row">
+                  <button class="detail-tab" data-playtest-tab="status">状态变量</button>
+                  <button class="detail-tab" data-playtest-tab="map">路径图</button>
+                </div>
+                <div id="playtest-tab-status" class="playtest-tab-panel">
+                  <div id="status-panels" class="status-panels"></div>
+                </div>
+                <div id="playtest-tab-map" class="playtest-tab-panel hidden">
+                  <div id="playtest-route-map"></div>
+                </div>
+              </aside>
+            </div>
+          </section>
+      </main>
+    </div>
+
+    <div id="loading-overlay" class="loading-overlay hidden">
+      <div class="loading-card">
+        <div class="spinner"></div>
+        <h3>生成故事中...</h3>
+        <p>正在组织意图层、结构层与动力层。</p>
+        <div class="progress-track"><div class="progress-bar"></div></div>
+      </div>
+    </div>
+
+    <script src="/main.js"></script>
+  </body>
+</html>
